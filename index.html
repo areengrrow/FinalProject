@@ -1,83 +1,177 @@
 <html>
-  <head>
-    <title>Let's dance</title>
-    <link href="https://fonts.googleapis.com/css?family=Orbitron|Russo+One" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="assets/images/rh_right.png">
-    <link rel="stylesheet" type="text/css" href="assets/css/endless.css">
 
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-100350356-1', 'auto');
-      ga('send', 'pageview');
-    </script>
+<head>
+  <title>Let's dance</title>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron|Russo+One" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" href="assets/images/rh_right.png">
+  <link rel="stylesheet" type="text/css" href="assets/css/endless.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
-    <script type="application/javascript" src="./lib/bundle.js"></script>
-  </head>
-  <body>
-    <section id="screen">
-      <div id="board">
-        <div id="instructionModal" class="visible">
-          <img id="instructionImage" src="./assets/images/instructions.png" />
-          <div>
-            <button type="button"
-            onClick="board.closeModal()">Close</button>
-          </div>
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-100350356-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+  <script type="application/javascript" src="./lib/bundle.js"></script>
+  <style>
+    .container {
+      display: none;
+      margin-top: 10px;
+      padding: 0 0 0 30;
+      justify-content: space-between;
+    }
+
+    .styled_button {
+      appearance: button;
+      background-color: #1899D6;
+      border: solid transparent;
+      border-radius: 16px;
+      border-width: 0 0 4px;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-block;
+      font-family: din-round, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      line-height: 20px;
+      margin: 0;
+      outline: none;
+      overflow: visible;
+      padding: 13px 16px;
+      text-align: center;
+      text-transform: uppercase;
+      touch-action: manipulation;
+      transform: translateZ(0);
+      transition: filter .2s;
+      user-select: none;
+      -webkit-user-select: none;
+      vertical-align: middle;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .styled_button:after {
+      background-clip: padding-box;
+      background-color: #1CB0F6;
+      border: solid transparent;
+      border-radius: 16px;
+      border-width: 0 0 4px;
+      bottom: -4px;
+      content: "";
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: -1;
+    }
+
+    .styled_button:main,
+    .styled_button:focus {
+      user-select: auto;
+    }
+
+    .styled_button:hover:not(:disabled) {
+      filter: brightness(1.1);
+      -webkit-filter: brightness(1.1);
+    }
+
+    .styled_button:disabled {
+      cursor: auto;
+    }
+
+    @media screen and (max-width: 1200px) {
+      .container {
+        display: flex !important;
+      }
+      
+      .hiding {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section id="screen">
+    <div id="board">
+      <div id="instructionModal" class="visible">
+        <img id="instructionImage" src="./assets/images/instructions.png" />
+        <div>
+          <button type="button" onClick="board.closeModal()">Close</button>
         </div>
-        <canvas id="canvas" height="720" width="720"></canvas>
       </div>
-
-      <div id="controls">
-        <h1>Let's dance</h1>
-
-        <div class="stats">
-          <div class="life">
-            <h2>Life</h2>
-            <p id="life">100</p>
-          </div>
-          <div class="scoreboard">
-            <h2>Score</h2>
-            <p id="score">0</p>
-          </div>
-        </div>
-
-        <div class="difficulty">
-          <h2>Choose Level</h2>
-          <div>
-            <button type="button"
-            onClick="board.closeModal()" id="light">Light</button>
-            <img src="./assets/images/right_hand.png" />
-          </div>
-          <div>
-            <button type="button"
-            onClick="board.closeModal()" id="standard">Standard</button>
-            <img src="./assets/images/right_hand.png" />
-          </div>
-          <div>
-            <img src="./assets/images/left_hand.png" />
-            <button type="button"
-            onClick="board.closeModal()" id="heavy">Heavy</button>
-            <img src="./assets/images/right_hand.png" />
-          </div>
-        </div>
-
-        <button id="mute"><i id="muteIcon" class="fa fa-volume-up" aria-hidden="true"></i></button>
-
-        <div class="instructions">
-          <a onClick="board.openModal()">Instructions
-          </a>
-        </div>
-
-        <div class="links">
-          <a href="https://www.google.com/" target="_blank"><img src="./assets/images/github.png"/></a>
-          <a href="https://www.google.com/" target="_blank"><img src="./assets/images/linkedin.png"/></a>
-        </div>
+      <canvas id="canvas" height="720" width="720"></canvas>
+      <div class="grid-container container hiding" id="button-container-ipad">
+        <div class="grid-item"> <button class="button styled_button" id="lLeft" type="button"> lLeft</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="lRight" type="button"> lRight</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="lUp" type="button"> lUp</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="lDown" type="button"> lDown</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="rLeft" type="button"> Hello</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="rRight" type="button"> Hello</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="rUp" type="button"> Hello</button></div>
+        <div class="grid-item"> <button class="button styled_button" id="rDown" type="button"> Hello</button></div>
       </div>
     </div>
-  </body>
+
+    <div id="controls">
+      <h1>Let's dance</h1>
+
+      <div class="stats">
+        <div class="life">
+          <h2>Life</h2>
+          <p id="life">100</p>
+        </div>
+        <div class="scoreboard">
+          <h2>Score</h2>
+          <p id="score">0</p>
+        </div>
+      </div>
+
+      <div class="difficulty">
+        <h2>Choose Level</h2>
+        <div>
+          <button type="button" onClick="board.closeModal()" id="light">Light</button>
+          <img src="./assets/images/right_hand.png" />
+        </div>
+        <div>
+          <button type="button" onClick="board.closeModal()" id="standard">Standard</button>
+          <img src="./assets/images/right_hand.png" />
+        </div>
+        <div>
+          <img src="./assets/images/left_hand.png" />
+          <button type="button" onClick="board.closeModal()" id="heavy">Heavy</button>
+          <img src="./assets/images/right_hand.png" />
+        </div>
+      </div>
+
+      <button id="mute"><i id="muteIcon" class="fa fa-volume-up" aria-hidden="true"></i></button>
+
+      <div class="instructions">
+        <a onClick="board.openModal()">Instructions
+        </a>
+      </div>
+
+      <div class="links">
+        <a href="https://www.google.com/" target="_blank"><img src="./assets/images/github.png" /></a>
+        <a href="https://www.google.com/" target="_blank"><img src="./assets/images/linkedin.png" /></a>
+      </div>
+    </div>
+    </div>
+</body>
+
 </html>
