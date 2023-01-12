@@ -845,7 +845,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function RhandlePress(e) {
     if (game.started) {
-
+      switch (e.keyCode) {
+        case 106:
+          game.check(game.RleftArrows, "r_left");
+          break;
+        case 107:
+          game.check(game.RdownArrows, "r_down");
+          break;
+        case 105:
+          game.check(game.RupArrows, "r_up");
+          break;
+        case 108:
+          game.check(game.RrightArrows, "r_right");
+          break;
+      }
     }
   }
 
